@@ -17,12 +17,12 @@ struct StudentInformation {
     let lastName : String!
     let mediaURL : String!
     
-    init(lat : CLLocationDegrees, long : CLLocationDegrees, coordinate : CLLocationCoordinate2D, firstName : String!, lastName : String!, mediaURL : String!) {
-        self.lat = lat
-        self.long = long
-        self.coordinate = coordinate
-        self.firstName = firstName
-        self.lastName = lastName
-        self.mediaURL = mediaURL
+    init(studentInformation : [String : AnyObject]) {
+        self.lat = CLLocationDegrees(studentInformation["latitude"] as! Double)
+        self.long = CLLocationDegrees(studentInformation["longitude"] as! Double)
+        self.coordinate =  CLLocationCoordinate2D(latitude: lat, longitude: long)
+        self.firstName = studentInformation["firstName"] as! String!
+        self.lastName = studentInformation["lastName"] as! String!
+        self.mediaURL = studentInformation["mediaURL"] as! String!
     }
 }

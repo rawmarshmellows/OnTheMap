@@ -96,18 +96,34 @@ class LoginViewController: UIViewController {
     }
     
     func completeLogin() {
-        dispatch_async(dispatch_get_main_queue(), {
-            // Creating needed controllers
-            let tabBarController = self.storyboard!.instantiateViewControllerWithIdentifier("PostLoginTabBarController") as! UITabBarController
-            //            let tableViewController = self.storyboard!.instantiateViewControllerWithIdentifier("InformationTableViewController") as! InformationTableViewController
-            //            let tableViewNavController = UINavigationController(rootViewController: tableViewController)
-            //            let mapViewController = self.storyboard!.instantiateViewControllerWithIdentifier("MapViewController") as! MapViewController
-            //            let mapViewNavController = UINavigationController(rootViewController: mapViewController)
-            //            tabBarController.setViewControllers([tableViewNavController, mapViewNavController], animated: true)
-            self.presentViewController(tabBarController, animated: true, completion: nil)
-        })
-    }
+        ParseClient.sharedInstance().getStudentData { (success, errorString) in
+            if (success) {
+                dispatch_async(dispatch_get_main_queue(), {
+                    // Creating needed controllers
+                    let tabBarController = self.storyboard!.instantiateViewControllerWithIdentifier("PostLoginTabBarController") as! UITabBarController
+                    //            let tableViewController = self.storyboard!.instantiateViewControllerWithIdentifier("InformationTableViewController") as! InformationTableViewController
+                    //            let tableViewNavController = UINavigationController(rootViewController: tableViewController)
+                    //            let mapViewController = self.storyboard!.instantiateViewControllerWithIdentifier("MapViewController") as! MapViewController
+                    //            let mapViewNavController = UINavigationController(rootViewController: mapViewController)
+                    //            tabBarController.setViewControllers([tableViewNavController, mapViewNavController], animated: true)
+                    self.presentViewController(tabBarController, animated: true, completion: nil)
+                })
 
+            }
+                
+            else {
+                dispatch_async(dispatch_get_main_queue(), {
+                    let alert = UIAlertController(title: "Data not loaded", message: "Connection error", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                })
+                
+            }
+        }
+
+    }
+    
+  
     
     func subscribeToKeyboardWillShowNotifications() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
@@ -208,3 +224,5 @@ class LoginViewController: UIViewController {
         }
     }
 }
+
+

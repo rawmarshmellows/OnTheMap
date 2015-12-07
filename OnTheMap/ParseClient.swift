@@ -63,25 +63,10 @@ class ParseClient : NSObject {
             
         }
         task.resume()
-        print("done loading data")
     }
     func addStudentInformation(studentsInformation : [[String: AnyObject]]) {
         for studentInformation in studentsInformation {
-            
-            // Notice that the float values are being used to create CLLocationDegree values.
-            // This is a version of the Double type.
-            let lat = CLLocationDegrees(studentInformation["latitude"] as! Double)
-            let long = CLLocationDegrees(studentInformation["longitude"] as! Double)
-            
-            // The lat and long are used to create a CLLocationCoordinates2D instance.
-            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-            
-            let firstName = studentInformation["firstName"] as! String!
-            let lastName = studentInformation["lastName"] as! String!
-            let mediaURL = studentInformation["mediaURL"] as! String!
-            
-            // Appending the student information to the list
-            appDelegate.studentsInformation.append(StudentInformation(lat: lat, long: long, coordinate: coordinate, firstName: firstName, lastName: lastName, mediaURL: mediaURL))
+            appDelegate.studentsInformation.append(StudentInformation(studentInformation: studentInformation))
         }
     }
 }
