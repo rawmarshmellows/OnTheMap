@@ -8,10 +8,11 @@
 
 import UIKit
 
-class FindOnMapButton: UIButton {
+class FindOnMapAndSubmitButton: UIButton {
     
-    let borderedButtonCornerRadius : CGFloat = 4.0
+    let borderedButtonCornerRadius : CGFloat = 6.0
     let buttonTitleFontSize : CGFloat = 15.0
+ let lightNavyBlue : UIColor = UIColor(red: 10/255, green: 100/255, blue: 165/255, alpha: 1)
     // MARK: Initialization
     required init(coder aDecoder : NSCoder) {
         super.init(coder: aDecoder)!
@@ -24,7 +25,7 @@ class FindOnMapButton: UIButton {
     
     func themeBorderedButton() {
         self.backgroundColor = UIColor.whiteColor()
-        self.setTitleColor(UIColor(red: 0, green: 51/255, blue: 102/255, alpha: 1), forState: .Normal)
+        self.setTitleColor(lightNavyBlue, forState: .Normal)
         self.titleLabel?.font = UIFont(name: "Roboto-Regular", size: buttonTitleFontSize)
         self.layer.cornerRadius = borderedButtonCornerRadius
     }

@@ -36,7 +36,14 @@ class LoginViewController: UIViewController {
         self.subscribeToKeyboardWillShowNotifications()
         self.subscribeToKeyboardWillHideNotifications()
     }
-
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.unsubscribeFromKeyboardWillHideNotifications()
+        self.unsubscribeFromKeyboardWillShowNotifications()
+    }
+    
+    // MARK: UI Configuration
     func configureUI() {
         /* Configure background gradient */
         self.view.backgroundColor = UIColor.clearColor()
@@ -95,56 +102,7 @@ class LoginViewController: UIViewController {
 //        textField.frame.size.height = 50
     }
     
-    func completeLogin() {
-        ParseClient.sharedInstance().getStudentData { (success, errorString) in
-            if (success) {
-                dispatch_async(dispatch_get_main_queue(), {
-                    // Creating needed controllers
-                    let tabBarController = self.storyboard!.instantiateViewControllerWithIdentifier("PostLoginTabBarController") as! UITabBarController
-                    //            let tableViewController = self.storyboard!.instantiateViewControllerWithIdentifier("InformationTableViewController") as! InformationTableViewController
-                    //            let tableViewNavController = UINavigationController(rootViewController: tableViewController)
-                    //            let mapViewController = self.storyboard!.instantiateViewControllerWithIdentifier("MapViewController") as! MapViewController
-                    //            let mapViewNavController = UINavigationController(rootViewController: mapViewController)
-                    //            tabBarController.setViewControllers([tableViewNavController, mapViewNavController], animated: true)
-                    self.presentViewController(tabBarController, animated: true, completion: nil)
-                })
-
-            }
-                
-            else {
-                dispatch_async(dispatch_get_main_queue(), {
-                    let alert = UIAlertController(title: "Data not loaded", message: "Connection error", preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
-                })
-                
-            }
-        }
-
-    }
-    
-  
-    
-    func subscribeToKeyboardWillShowNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-    }
-    
-    func subscribeToKeyboardWillHideNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
-    }
-    
-    
-    func unsubscribeFromKeyboardHideShowNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:
-            UIKeyboardWillHideNotification, object: nil)
-    }
-    
-    func unsubscribeFromKeyboardWillShowNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:
-            UIKeyboardWillShowNotification, object: nil)
-    }
-
-    // MARK: Keyboard movement
+    // MARK: Keyboard
     
     func keyboardHide() {
         // endEditing iterates through the subviews of our view and dismisses the keyboard which is a subview?
@@ -177,7 +135,25 @@ class LoginViewController: UIViewController {
         let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
         return keyboardSize.CGRectValue().height
     }
+    func subscribeToKeyboardWillShowNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+    }
     
+    func subscribeToKeyboardWillHideNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    
+    func unsubscribeFromKeyboardWillHideNotifications() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:
+            UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func unsubscribeFromKeyboardWillShowNotifications() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:
+            UIKeyboardWillShowNotification, object: nil)
+    }
+
     
     // MARK: Buttons
     @IBAction func loginButton(sender: AnyObject) {
@@ -223,6 +199,37 @@ class LoginViewController: UIViewController {
         
         }
     }
+    
+    // MARK: Navigation
+    func completeLogin() {
+        ParseClient.sharedInstance().getStudentData { (success, errorString) in
+            if (success) {
+                dispatch_async(dispatch_get_main_queue(), {
+                    // Creating needed controllers
+                    let tabBarController = self.storyboard!.instantiateViewControllerWithIdentifier("PostLoginTabBarController") as! UITabBarController
+                    //            let tableViewController = self.storyboard!.instantiateViewControllerWithIdentifier("InformationTableViewController") as! InformationTableViewController
+                    //            let tableViewNavController = UINavigationController(rootViewController: tableViewController)
+                    //            let mapViewController = self.storyboard!.instantiateViewControllerWithIdentifier("MapViewController") as! MapViewController
+                    //            let mapViewNavController = UINavigationController(rootViewController: mapViewController)
+                    //            tabBarController.setViewControllers([tableViewNavController, mapViewNavController], animated: true)
+                    self.presentViewController(tabBarController, animated: true, completion: nil)
+                })
+                
+            }
+                
+            else {
+                dispatch_async(dispatch_get_main_queue(), {
+                    let alert = UIAlertController(title: "Data not loaded", message: "Connection error", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                })
+                
+            }
+        }
+        
+    }
+    
+
 }
 
 

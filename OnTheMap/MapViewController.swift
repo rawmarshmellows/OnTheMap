@@ -45,10 +45,15 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             annotation.subtitle = studentInformation.mediaURL
             
             // Finally we place the annotation in an array of annotations.
-            annotations.append(annotation)        }
+            annotations.append(annotation)
+        }
         
         // When the array is complete, we add the annotations to the map.
-        self.mapView.addAnnotations(annotations)
+        mapView.addAnnotations(annotations)
+    }
+    
+    func removeAnnotations() {
+        mapView.removeAnnotations(mapView.annotations)
     }
     // MARK: - MKMapViewDelegate
     
@@ -102,6 +107,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 
             }
         }
+        removeAnnotations()
         populateAnnotations()
     }
     // MARK : Buttons

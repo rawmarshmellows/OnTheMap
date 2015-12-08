@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="I2i-FZ-6Rs">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
@@ -167,37 +167,44 @@
                                     <action selector="goBackToPreviousViewController:" destination="I2i-FZ-6Rs" eventType="touchUpInside" id="BgE-xh-edN"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Oe-Na-bSF" customClass="FindOnMapButton" customModule="OnTheMap" customModuleProvider="target">
-                                <rect key="frame" x="118" y="580" width="139" height="57"/>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="57" id="IzJ-Cl-S57"/>
-                                    <constraint firstAttribute="width" constant="139" id="hDL-zV-evW"/>
-                                </constraints>
-                                <state key="normal" title="Find on the map"/>
-                            </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kb4-Hi-3Wl">
-                                <rect key="frame" x="0.0" y="233" width="375" height="317"/>
-                                <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Ll-aA-3sX">
-                                        <rect key="frame" x="8" y="1" width="359" height="316"/>
-                                        <animations/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                </subviews>
-                                <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Where are you" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vtn-dT-ITl">
-                                <rect key="frame" x="68" y="80" width="238" height="33"/>
+                                <rect key="frame" x="68" y="62" width="238" height="33"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="23"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MKq-ss-98S">
+                                <rect key="frame" x="0.0" y="558" width="375" height="109"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Oe-Na-bSF" customClass="FindOnMapAndSubmitButton" customModule="OnTheMap" customModuleProvider="target">
+                                        <rect key="frame" x="118" y="26" width="139" height="57"/>
+                                        <animations/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="57" id="IzJ-Cl-S57"/>
+                                            <constraint firstAttribute="width" constant="139" id="hDL-zV-evW"/>
+                                        </constraints>
+                                        <state key="normal" title="Find on the map"/>
+                                        <connections>
+                                            <action selector="findOnTheMapButton:" destination="I2i-FZ-6Rs" eventType="touchUpInside" id="rE1-RH-L2g"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="4Oe-Na-bSF" firstAttribute="top" secondItem="MKq-ss-98S" secondAttribute="top" constant="26" id="0u1-Nb-TyH"/>
+                                    <constraint firstItem="4Oe-Na-bSF" firstAttribute="centerY" secondItem="MKq-ss-98S" secondAttribute="centerY" id="BRa-VY-d4l"/>
+                                    <constraint firstItem="4Oe-Na-bSF" firstAttribute="top" secondItem="MKq-ss-98S" secondAttribute="top" constant="26" id="IEX-cM-qvl"/>
+                                    <constraint firstItem="4Oe-Na-bSF" firstAttribute="top" secondItem="MKq-ss-98S" secondAttribute="top" constant="26" id="Qws-j4-Rzw"/>
+                                    <constraint firstItem="4Oe-Na-bSF" firstAttribute="leading" secondItem="MKq-ss-98S" secondAttribute="leading" constant="118" id="Viu-WL-8B0"/>
+                                    <constraint firstItem="4Oe-Na-bSF" firstAttribute="leading" secondItem="MKq-ss-98S" secondAttribute="leading" constant="118" id="Yp8-lz-Avz"/>
+                                    <constraint firstItem="4Oe-Na-bSF" firstAttribute="centerX" secondItem="MKq-ss-98S" secondAttribute="centerX" id="jty-Lo-9m9"/>
+                                    <constraint firstAttribute="bottom" secondItem="4Oe-Na-bSF" secondAttribute="bottom" constant="26" id="tbX-0i-0ae"/>
+                                </constraints>
+                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="studying" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eya-Ut-dGt">
-                                <rect key="frame" x="68" y="118" width="238" height="27"/>
+                                <rect key="frame" x="68" y="100" width="238" height="27"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="2e1-lS-zYy"/>
@@ -212,8 +219,17 @@
                                     </mask>
                                 </variation>
                             </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CdO-SK-7uX">
+                                <rect key="frame" x="0.0" y="173" width="375" height="388"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="388" id="kPM-yc-Dg1"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="today?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OlG-oL-tQL">
-                                <rect key="frame" x="68" y="153" width="238" height="30"/>
+                                <rect key="frame" x="68" y="135" width="238" height="30"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="2eC-5t-LM0"/>
@@ -232,31 +248,26 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Kb4-Hi-3Wl" firstAttribute="top" secondItem="OlG-oL-tQL" secondAttribute="bottom" constant="50" id="8MP-B2-bUp"/>
                             <constraint firstItem="eya-Ut-dGt" firstAttribute="top" secondItem="mh9-gK-egc" secondAttribute="top" constant="98" id="97N-1B-sgp"/>
-                            <constraint firstItem="4Oe-Na-bSF" firstAttribute="top" secondItem="Kb4-Hi-3Wl" secondAttribute="bottom" constant="30" id="AVG-1a-c9K"/>
                             <constraint firstItem="Vtn-dT-ITl" firstAttribute="leading" secondItem="eya-Ut-dGt" secondAttribute="leading" id="Dy1-8a-k6r"/>
                             <constraint firstItem="OlG-oL-tQL" firstAttribute="top" secondItem="mh9-gK-egc" secondAttribute="top" constant="174" id="EjP-mE-NaP"/>
                             <constraint firstItem="8v8-q7-PQD" firstAttribute="leading" secondItem="mh9-gK-egc" secondAttribute="leading" id="HYT-EW-rKu"/>
-                            <constraint firstItem="Kb4-Hi-3Wl" firstAttribute="leading" secondItem="8v8-q7-PQD" secondAttribute="leading" id="IF0-uF-TGe"/>
                             <constraint firstItem="OlG-oL-tQL" firstAttribute="trailing" secondItem="eya-Ut-dGt" secondAttribute="trailing" id="Iie-aw-pDh"/>
                             <constraint firstItem="OlG-oL-tQL" firstAttribute="top" secondItem="eya-Ut-dGt" secondAttribute="bottom" constant="8" id="NEP-Is-v7R"/>
                             <constraint firstItem="OlG-oL-tQL" firstAttribute="leading" secondItem="eya-Ut-dGt" secondAttribute="leading" id="NLS-gp-haV"/>
-                            <constraint firstItem="OlG-oL-tQL" firstAttribute="centerX" secondItem="4Oe-Na-bSF" secondAttribute="centerX" id="PhK-ae-QNH"/>
+                            <constraint firstItem="ed0-yd-1jT" firstAttribute="top" secondItem="CdO-SK-7uX" secondAttribute="bottom" constant="106" id="UXe-pa-vDP"/>
                             <constraint firstItem="8v8-q7-PQD" firstAttribute="top" secondItem="9IM-Fy-e9W" secondAttribute="bottom" id="XA5-b0-G8Q"/>
-                            <constraint firstItem="Vtn-dT-ITl" firstAttribute="top" secondItem="8v8-q7-PQD" secondAttribute="bottom" constant="26" id="Z1x-Zw-UJz"/>
-                            <constraint firstItem="Kb4-Hi-3Wl" firstAttribute="top" secondItem="mh9-gK-egc" secondAttribute="top" constant="233" id="d9Y-35-u98"/>
+                            <constraint firstItem="MKq-ss-98S" firstAttribute="leading" secondItem="8v8-q7-PQD" secondAttribute="leading" id="YIc-Bz-VQv"/>
+                            <constraint firstItem="CdO-SK-7uX" firstAttribute="top" secondItem="OlG-oL-tQL" secondAttribute="bottom" constant="8" symbolic="YES" id="YcV-5A-Rc7"/>
+                            <constraint firstItem="Vtn-dT-ITl" firstAttribute="top" secondItem="8v8-q7-PQD" secondAttribute="bottom" constant="8" id="Z1x-Zw-UJz"/>
                             <constraint firstItem="Vtn-dT-ITl" firstAttribute="trailing" secondItem="eya-Ut-dGt" secondAttribute="trailing" id="fKw-3P-rnu"/>
                             <constraint firstItem="8v8-q7-PQD" firstAttribute="centerX" secondItem="eya-Ut-dGt" secondAttribute="centerX" id="gik-FS-vgf"/>
-                            <constraint firstAttribute="bottom" secondItem="4Oe-Na-bSF" secondAttribute="bottom" constant="30" id="j9Z-aI-d8G"/>
-                            <constraint firstItem="Kb4-Hi-3Wl" firstAttribute="top" secondItem="OlG-oL-tQL" secondAttribute="bottom" constant="31" id="je2-Wa-FoO"/>
                             <constraint firstItem="OlG-oL-tQL" firstAttribute="top" secondItem="eya-Ut-dGt" secondAttribute="bottom" constant="8" symbolic="YES" id="lZf-Pc-jIE"/>
-                            <constraint firstItem="4Oe-Na-bSF" firstAttribute="top" secondItem="Kb4-Hi-3Wl" secondAttribute="bottom" constant="41" id="pN3-fd-Vwn"/>
+                            <constraint firstItem="MKq-ss-98S" firstAttribute="bottom" secondItem="ed0-yd-1jT" secondAttribute="top" id="oQL-2V-xM9"/>
+                            <constraint firstItem="MKq-ss-98S" firstAttribute="trailing" secondItem="CdO-SK-7uX" secondAttribute="trailing" id="r1T-bj-ZC3"/>
+                            <constraint firstItem="MKq-ss-98S" firstAttribute="leading" secondItem="CdO-SK-7uX" secondAttribute="leading" id="stA-SZ-eFa"/>
                             <constraint firstItem="eya-Ut-dGt" firstAttribute="top" secondItem="Vtn-dT-ITl" secondAttribute="bottom" constant="5" id="tai-tb-sSF"/>
-                            <constraint firstItem="Kb4-Hi-3Wl" firstAttribute="top" secondItem="mh9-gK-egc" secondAttribute="top" constant="233" id="wYx-e7-AjM"/>
-                            <constraint firstItem="Kb4-Hi-3Wl" firstAttribute="trailing" secondItem="8v8-q7-PQD" secondAttribute="trailing" id="xK3-HW-Dbb"/>
                             <constraint firstItem="OlG-oL-tQL" firstAttribute="top" secondItem="eya-Ut-dGt" secondAttribute="bottom" constant="8" id="yev-0f-s3H"/>
-                            <constraint firstAttribute="bottom" secondItem="4Oe-Na-bSF" secondAttribute="bottom" constant="20" symbolic="YES" id="z0u-xg-DY0"/>
                             <constraint firstAttribute="trailing" secondItem="8v8-q7-PQD" secondAttribute="trailing" id="zxE-0i-WrI"/>
                         </constraints>
                         <variation key="default">
@@ -264,10 +275,6 @@
                                 <exclude reference="97N-1B-sgp"/>
                                 <exclude reference="EjP-mE-NaP"/>
                                 <exclude reference="lZf-Pc-jIE"/>
-                                <exclude reference="je2-Wa-FoO"/>
-                                <exclude reference="wYx-e7-AjM"/>
-                                <exclude reference="pN3-fd-Vwn"/>
-                                <exclude reference="z0u-xg-DY0"/>
                             </mask>
                         </variation>
                     </view>
@@ -276,13 +283,18 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
-                        <outlet property="subView" destination="Kb4-Hi-3Wl" id="hFM-c1-jcL"/>
-                        <outlet property="textField" destination="5Ll-aA-3sX" id="sbR-GF-cpt"/>
+                        <outlet property="bottomLabel" destination="OlG-oL-tQL" id="7gW-Nr-o77"/>
+                        <outlet property="cancelButton" destination="8v8-q7-PQD" id="q0E-je-gzj"/>
+                        <outlet property="enterLocationTextField" destination="CdO-SK-7uX" id="bdl-pJ-HQl"/>
+                        <outlet property="findOnMapAndSubmitButton" destination="4Oe-Na-bSF" id="elr-Oy-z6N"/>
+                        <outlet property="findOnTheMapView" destination="MKq-ss-98S" id="nGO-1q-fGV"/>
+                        <outlet property="middleLabel" destination="eya-Ut-dGt" id="muy-rI-wK5"/>
+                        <outlet property="topLabel" destination="Vtn-dT-ITl" id="aKw-Op-6ef"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vRz-g8-d3O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2767.5" y="229.5"/>
+            <point key="canvasLocation" x="2809.5" y="187.5"/>
         </scene>
         <!--Post Login Tab Bar Controller-->
         <scene sceneID="eiR-it-Veb">

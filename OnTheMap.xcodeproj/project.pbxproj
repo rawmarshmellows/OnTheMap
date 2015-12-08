@@ -27,7 +27,7 @@
 		198C06BA1C1305BD002334A9 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198C06B91C1305BD002334A9 /* MapViewController.swift */; };
 		198C06BC1C13F403002334A9 /* ParseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198C06BB1C13F403002334A9 /* ParseClient.swift */; };
 		198C06BE1C13F4FC002334A9 /* DelegationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198C06BD1C13F4FC002334A9 /* DelegationClient.swift */; };
-		19C4465D1C15944900EF3BB4 /* FindOnMapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C4465C1C15944900EF3BB4 /* FindOnMapButton.swift */; };
+		19C4465D1C15944900EF3BB4 /* FindOnMapAndSubmitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C4465C1C15944900EF3BB4 /* FindOnMapAndSubmitButton.swift */; };
 		19C4465F1C15AB3600EF3BB4 /* StudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C4465E1C15AB3600EF3BB4 /* StudentInformation.swift */; };
 		19D37B2B1C10412400ADE52D /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D37B2A1C10412400ADE52D /* LoginButton.swift */; };
 		19F227431C1587AB000B8C6F /* PostingInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F227421C1587AB000B8C6F /* PostingInformationViewController.swift */; };
@@ -75,7 +75,7 @@
 		198C06B91C1305BD002334A9 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		198C06BB1C13F403002334A9 /* ParseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseClient.swift; sourceTree = "<group>"; };
 		198C06BD1C13F4FC002334A9 /* DelegationClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegationClient.swift; sourceTree = "<group>"; };
-		19C4465C1C15944900EF3BB4 /* FindOnMapButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindOnMapButton.swift; sourceTree = "<group>"; };
+		19C4465C1C15944900EF3BB4 /* FindOnMapAndSubmitButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindOnMapAndSubmitButton.swift; sourceTree = "<group>"; };
 		19C4465E1C15AB3600EF3BB4 /* StudentInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentInformation.swift; sourceTree = "<group>"; };
 		19D37B2A1C10412400ADE52D /* LoginButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
 		19F227421C1587AB000B8C6F /* PostingInformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostingInformationViewController.swift; sourceTree = "<group>"; };
@@ -175,7 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				19D37B2A1C10412400ADE52D /* LoginButton.swift */,
-				19C4465C1C15944900EF3BB4 /* FindOnMapButton.swift */,
+				19C4465C1C15944900EF3BB4 /* FindOnMapAndSubmitButton.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -342,7 +342,7 @@
 			files = (
 				19C4465F1C15AB3600EF3BB4 /* StudentInformation.swift in Sources */,
 				1968906B1C12A66300F9C7C3 /* UdacityClient.swift in Sources */,
-				19C4465D1C15944900EF3BB4 /* FindOnMapButton.swift in Sources */,
+				19C4465D1C15944900EF3BB4 /* FindOnMapAndSubmitButton.swift in Sources */,
 				195241B31C14136000285E0C /* InformationTableViewCell.swift in Sources */,
 				19F227431C1587AB000B8C6F /* PostingInformationViewController.swift in Sources */,
 				1905C5EA1C0EEC2F00363DBB /* OnTheMap.xcdatamodeld in Sources */,
