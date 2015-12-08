@@ -40,9 +40,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         for studentInformation in studentsInformation {
             
             let annotation = MKPointAnnotation()
-            annotation.coordinate = studentInformation.coordinate
+            annotation.coordinate = studentInformation.coordinate!
             annotation.title = "\(studentInformation.firstName) \(studentInformation.lastName)"
-            annotation.subtitle = studentInformation.mediaURL
+            annotation.subtitle = studentInformation.mediaURL!
             
             // Finally we place the annotation in an array of annotations.
             annotations.append(annotation)

@@ -11,7 +11,6 @@
 		1903448C1C116CB3007EA710 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 190344891C116CB3007EA710 /* Roboto-Regular.ttf */; };
 		1903448D1C116CB3007EA710 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1903448A1C116CB3007EA710 /* Roboto-Thin.ttf */; };
 		1903448E1C116F42007EA710 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1905C6061C0EEC3000363DBB /* Info.plist */; };
-		1903448F1C117EAD007EA710 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1905C5F01C0EEC2F00363DBB /* Info.plist */; };
 		1905C5E21C0EEC2F00363DBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1905C5E11C0EEC2F00363DBB /* AppDelegate.swift */; };
 		1905C5E41C0EEC2F00363DBB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1905C5E31C0EEC2F00363DBB /* LoginViewController.swift */; };
 		1905C5E71C0EEC2F00363DBB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1905C5E51C0EEC2F00363DBB /* Main.storyboard */; };
@@ -308,7 +307,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1903448F1C117EAD007EA710 /* Info.plist in Resources */,
 				1903448B1C116CB3007EA710 /* Roboto-Medium.ttf in Resources */,
 				1905C5EF1C0EEC2F00363DBB /* LaunchScreen.storyboard in Resources */,
 				1903448D1C116CB3007EA710 /* Roboto-Thin.ttf in Resources */,

@@ -147,8 +147,9 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
     func updateMapView() {
         let span = MKCoordinateSpanMake(spanDeltaForMapView, spanDeltaForMapView)
         let region = MKCoordinateRegion(center: userCoordinates, span: span)
-        print(region)
-        mapView.regionThatFits(region)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = userCoordinates
+        mapView.setRegion(region, animated: true)
     }
     // MARK: - Buttons
     

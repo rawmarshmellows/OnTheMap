@@ -10,11 +10,10 @@ import UIKit
 import Foundation
 
 class UdacityClient : NSObject {
-    var session : NSURLSession
+    var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var sessionID : String?
     
     override init() {
-        session = NSURLSession.sharedSession()
         super.init()
     }
     class func sharedInstance() -> UdacityClient {
@@ -40,7 +39,7 @@ class UdacityClient : NSObject {
 //        HTTPBody += "\"}}"
 //        request.HTTPBody = HTTPBody.dataUsingEncoding(NSUTF8StringEncoding)
         request.HTTPBody = "{\"udacity\": {\"username\": \"kevinyihchyunlu@gmail.com\", \"password\": \"V+.i2##=Ln\"}}".dataUsingEncoding(NSUTF8StringEncoding)
-        session = NSURLSession.sharedSession()
+        let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
             // Checking for errors
             guard (error == nil) else {
@@ -66,22 +65,69 @@ class UdacityClient : NSObject {
                 completionHandler(success: false, errorString: "There was an error in the conversion for data")
                 return
             }
-//            print(parsedResult)
             if let parsedResult = parsedResult {
                 if (parsedResult.objectForKey("error") == nil) {
                     self.sessionID = String(parsedResult["session"]!!["id"])
-                    completionHandler(success: true, errorString: nil)
+                    let uniqueKey = parsedResult["account"]!!["key"]! as! String
+                    print(uniqueKey)
+                    self.appDelegate.userInformation = StudentInformation(studentInformation: ["uniqueKey" : uniqueKey])
+                    print(self.appDelegate.userInformation!)
+                    // get user data
+                    self.getUserData() { (success, errorString) in
+                        if(success) {
+                            completionHandler(success: success, errorString: nil)
+                        }
+                        else {
+                            completionHandler(success: success, errorString: errorString)
+                        }
+                        
+                    }
                 }
                 else {
                     completionHandler(success: false, errorString: "Please check email and password")
                     return
                 }
             }
+            
         }
         task.resume()
     }
     
-
+    func getUserData(completionHandler : (success : Bool, errorString : String?) -> Void) {
+        let uniqueKey = appDelegate.userInformation!.uniqueKey
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/users/" + uniqueKey)!)
+        print("https://www.udacity.com/api/users/" + uniqueKey)
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            if error != nil {
+                completionHandler(success: false, errorString: "Can't retrieve user data")
+                return
+            }
+            let newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5)) /* subset response data! */
+            
+            let parsedResult: AnyObject?
+            
+            do {
+                parsedResult = try NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments)
+            }
+            catch {
+                completionHandler(success: false, errorString: "There was an error in the conversion for data")
+                return
+            }
+            
+            if let parsedResult = parsedResult {
+                if (parsedResult.objectForKey("error") == nil) {
+                    let firstName = parsedResult["user"]!!["first_name"] as! String
+                    let lastName = parsedResult["user"]!!["last_name"] as! String
+                    self.appDelegate.userInformation!.firstName = firstName
+                    self.appDelegate.userInformation!.lastName = lastName
+                    print(self.appDelegate.userInformation!)
+                    completionHandler(success: true, errorString: nil)
+                }
+            }
+        }
+        task.resume()
+    }
 }
 
 
