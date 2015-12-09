@@ -95,7 +95,12 @@ class InformationTableViewController: UITableViewController {
         let studentInformation = appDelegate.studentsInformation[indexPath.row]
         let studentMediaURL = studentInformation.mediaURL!
         let app = UIApplication.sharedApplication()
-        app.openURL(NSURL(string: studentMediaURL)!)
+        if (app.canOpenURL(NSURL(string: studentMediaURL)!)){
+            app.openURL(NSURL(string: studentMediaURL)!)
+        }
+        else {
+            self.showAlert("Error", message: "Invalid URL", confirmButton: "OK")
+        }
 //        var updatedStudentMediaURL : String!
 //        
 //        

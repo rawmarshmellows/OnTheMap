@@ -81,8 +81,13 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 
         let studentMediaURL = annotationView.annotation!.subtitle!!
         let app = UIApplication.sharedApplication()
-        app.openURL(NSURL(string: studentMediaURL)!)
-//        
+        if (app.canOpenURL(NSURL(string: studentMediaURL)!)){
+            app.openURL(NSURL(string: studentMediaURL)!)
+        }
+        else {
+            self.showAlert("Error", message: "Invalid URL", confirmButton: "OK")
+        }
+//
 //
 //        var updatedStudentMediaURL : String!
 //        let app = UIApplication.sharedApplication()
