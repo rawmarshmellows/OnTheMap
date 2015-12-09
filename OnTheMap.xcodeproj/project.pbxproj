@@ -20,6 +20,7 @@
 		1905C5FA1C0EEC3000363DBB /* OnTheMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1905C5F91C0EEC3000363DBB /* OnTheMapTests.swift */; };
 		1905C6051C0EEC3000363DBB /* OnTheMapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1905C6041C0EEC3000363DBB /* OnTheMapUITests.swift */; };
 		19119C401C17D4FF007EF6AB /* ShowAlertExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19119C3F1C17D4FF007EF6AB /* ShowAlertExtension.swift */; };
+		19119C421C17E325007EF6AB /* ViewEffectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19119C411C17E325007EF6AB /* ViewEffectExtension.swift */; };
 		195241B31C14136000285E0C /* InformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 195241B21C14136000285E0C /* InformationTableViewCell.swift */; };
 		1968906B1C12A66300F9C7C3 /* UdacityClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1968906A1C12A66300F9C7C3 /* UdacityClient.swift */; };
 		198C06B61C12E61B002334A9 /* PostLoginTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198C06B51C12E61B002334A9 /* PostLoginTabBarController.swift */; };
@@ -69,6 +70,7 @@
 		1905C6041C0EEC3000363DBB /* OnTheMapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnTheMapUITests.swift; sourceTree = "<group>"; };
 		1905C6061C0EEC3000363DBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		19119C3F1C17D4FF007EF6AB /* ShowAlertExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowAlertExtension.swift; sourceTree = "<group>"; };
+		19119C411C17E325007EF6AB /* ViewEffectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewEffectExtension.swift; sourceTree = "<group>"; };
 		195241B21C14136000285E0C /* InformationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationTableViewCell.swift; sourceTree = "<group>"; };
 		1968906A1C12A66300F9C7C3 /* UdacityClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityClient.swift; sourceTree = "<group>"; };
 		198C06B51C12E61B002334A9 /* PostLoginTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostLoginTabBarController.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				198C06BB1C13F403002334A9 /* ParseClient.swift */,
 				19C4465E1C15AB3600EF3BB4 /* StudentInformation.swift */,
 				19119C3F1C17D4FF007EF6AB /* ShowAlertExtension.swift */,
+				19119C411C17E325007EF6AB /* ViewEffectExtension.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -352,6 +355,7 @@
 				198C06BE1C13F4FC002334A9 /* DelegationClient.swift in Sources */,
 				19D37B2B1C10412400ADE52D /* LoginButton.swift in Sources */,
 				198C06BA1C1305BD002334A9 /* MapViewController.swift in Sources */,
+				19119C421C17E325007EF6AB /* ViewEffectExtension.swift in Sources */,
 				198C06B81C12E887002334A9 /* InformationTableViewController.swift in Sources */,
 				198C06BC1C13F403002334A9 /* ParseClient.swift in Sources */,
 				1905C5E41C0EEC2F00363DBB /* LoginViewController.swift in Sources */,

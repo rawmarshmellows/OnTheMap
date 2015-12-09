@@ -45,11 +45,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x2s-xm-pK9" customClass="LoginButton" customModule="OnTheMap" customModuleProvider="target">
-                                <rect key="frame" x="20" y="577" width="335" height="40"/>
-                                <animations/>
-                                <state key="normal" title="Sign in with Facebook"/>
-                            </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="K4I-dN-3ml">
                                 <rect key="frame" x="20" y="284" width="335" height="40"/>
                                 <animations/>
@@ -78,7 +73,6 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="emailTextField" destination="K4I-dN-3ml" id="lfH-sv-22F"/>
-                        <outlet property="facebookLogin" destination="x2s-xm-pK9" id="KjR-Up-kIH"/>
                         <outlet property="loginLabel" destination="eRU-gF-gEK" id="CMP-8n-KlB"/>
                         <outlet property="passwordTextField" destination="k4c-YC-PxV" id="O0o-Mb-19e"/>
                         <outlet property="signUpLabel" destination="euj-nn-o2c" id="bK6-8b-aa5"/>
@@ -118,7 +112,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="On The Map" id="1vA-K1-9Qb">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="yAY-MI-to2"/>
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="yAY-MI-to2">
+                            <connections>
+                                <action selector="logoutButton:" destination="bDO-ik-d8b" id="e56-xk-arx"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="refresh" id="aZf-tu-s2e">
                                 <connections>
@@ -315,7 +313,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KlV-aA-ecz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="218" y="263.99999999999994"/>
+            <point key="canvasLocation" x="493" y="257"/>
         </scene>
         <!--On The Map-->
         <scene sceneID="uEh-dv-5I1">

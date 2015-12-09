@@ -9,11 +9,12 @@
 import Foundation
 import UIKit
 
-extension UIViewController {
+public extension UIViewController {
     // MARK: - Alert
     func showAlert(title : String, message : String, confirmButton : String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: confirmButton, style: UIAlertActionStyle.Default, handler: nil))
+        self.view.removeEffects()
         self.presentViewController(alert, animated: true, completion: nil)
     }
 }

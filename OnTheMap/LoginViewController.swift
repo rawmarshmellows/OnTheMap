@@ -15,19 +15,24 @@ class LoginViewController: UIViewController {
     let debugLabelFontSize : CGFloat = 15.0
     let signUpFontSize : CGFloat = 15.0
     let loginLabelFontSize : CGFloat = 24.0
+    let loggingInLabelHeight : CGFloat = 35.0
+    let loggingInlabelFontSize : CGFloat = 30.0
+    let lighterOrange = UIColor(red: 1.0, green: 0.45, blue: 0, alpha: 1.0)
+
     
     // MARK: Outlets
     @IBOutlet weak var loginLabel: UILabel!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var facebookLogin: LoginButton!
     @IBOutlet weak var signUpLabel: UILabel!
+    var loggingInLabel : UILabel?
+    
     
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        configureUI()
+        initialConfigureUI()
 
     }
     
@@ -40,12 +45,14 @@ class LoginViewController: UIViewController {
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
+        self.view.removeEffects()
+        loggingInLabel?.hidden = true
         self.unsubscribeFromKeyboardWillHideNotifications()
         self.unsubscribeFromKeyboardWillShowNotifications()
     }
     
-    // MARK: UI Configuration
-    func configureUI() {
+    // MARK: Initial UI Configuration
+    func initialConfigureUI() {
         /* Configure background gradient */
         self.view.backgroundColor = UIColor.clearColor()
         let colorTop = UIColor(red: 1, green: 0.8, blue: 0, alpha: 1).CGColor
@@ -67,13 +74,15 @@ class LoginViewController: UIViewController {
         /* Configure signup label */
         configureSignUpLabel()
         
-        /* Configure Facebook login*/
-        facebookLogin.setBackingColor(UIColor(red: 58/255, green: 89/255, blue: 152/255, alpha: 1.0))
-        facebookLogin.setHighlightedBackingColor(UIColor(red: 58/255, green: 89/255, blue: 152/255, alpha: 1.0))
-        
         /* Adding tapviews */
         let tapView = UITapGestureRecognizer(target: self, action: "keyboardHide")
         self.view.addGestureRecognizer(tapView)
+        
+        /* Configure the hidden labels that are shown when login button is pressed */
+        createLoggingInLabel()
+        configureLoggingInLabel()
+        loggingInLabel!.hidden = true
+
     }
     
   
@@ -118,6 +127,29 @@ class LoginViewController: UIViewController {
     func openUdacityWebpage() {
         UIApplication.sharedApplication().openURL(NSURL(string :"http://www.udacity.com")!)
     }
+    
+    //  MARK : After login UI Configuration
+    func afterLoginConfigureUI () {
+        /* Blur the view */
+        self.view.blurView(style: UIBlurEffectStyle.Light)
+        configureLoggingInLabel()
+        loggingInLabel!.hidden = false
+    }
+    
+    func createLoggingInLabel () {
+        let labelFrame = CGRectMake(0, self.view.frame.maxY/2, self.view.frame.width, loggingInLabelHeight)
+        loggingInLabel = UILabel(frame: labelFrame)
+    }
+    
+    func configureLoggingInLabel() {
+        loggingInLabel!.font = UIFont(name: "Roboto-Medium", size: loggingInlabelFontSize)
+        loggingInLabel!.textColor = UIColor.whiteColor()
+        loggingInLabel!.text = "Logging in..."
+        loggingInLabel!.textAlignment = NSTextAlignment.Center
+        self.view.addSubview(loggingInLabel!)
+        self.view.bringSubviewToFront(loggingInLabel!)
+    }
+    
     // MARK: Keyboard
     
     func keyboardHide() {
@@ -173,7 +205,9 @@ class LoginViewController: UIViewController {
     
     // MARK: Buttons
     @IBAction func loginButton(sender: AnyObject) {
-       UdacityClient.sharedInstance().authenticateLoginDetails(self) {(success, errorString) in
+        /* Updating the UI before posting user data */
+        afterLoginConfigureUI()
+        UdacityClient.sharedInstance().authenticateLoginDetails(self) {(success, errorString) in
             dispatch_async(dispatch_get_main_queue(), {
                 self.keyboardHide()
             })
@@ -182,53 +216,33 @@ class LoginViewController: UIViewController {
             }
             else if (errorString == "There was an networking error") {
                 dispatch_async(dispatch_get_main_queue(), {
-                    let alert = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
-                    
+                    self.showAlert("Error", message: errorString!, confirmButton: "OK")
                 })
             }
             else if (errorString == "There was an error in the request for data") {
                 dispatch_async(dispatch_get_main_queue(), {
-                    let alert = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
-
+                    self.showAlert("Error", message: errorString!, confirmButton: "OK")
                 })
             }
             else if (errorString == "There was an error in the conversion for data") {
                 dispatch_async(dispatch_get_main_queue(), {
-                    let alert = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
-
+                    self.showAlert("Error", message: errorString!, confirmButton: "OK")
                 })
             }
             else if (errorString == "Please check email and password") {
                 dispatch_async(dispatch_get_main_queue(), {
-                    let alert = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
-
+                    self.showAlert("Error", message: errorString!, confirmButton: "OK")
                 })
             }
-        
         }
     }
     
     // MARK: Navigation
     func completeLogin() {
-        print("complete login")
         ParseClient.sharedInstance().getStudentData { (success, errorString) in
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), {
-                    // Creating needed controllers
                     let tabBarController = self.storyboard!.instantiateViewControllerWithIdentifier("PostLoginTabBarController") as! UITabBarController
-                    //            let tableViewController = self.storyboard!.instantiateViewControllerWithIdentifier("InformationTableViewController") as! InformationTableViewController
-                    //            let tableViewNavController = UINavigationController(rootViewController: tableViewController)
-                    //            let mapViewController = self.storyboard!.instantiateViewControllerWithIdentifier("MapViewController") as! MapViewController
-                    //            let mapViewNavController = UINavigationController(rootViewController: mapViewController)
-                    //            tabBarController.setViewControllers([tableViewNavController, mapViewNavController], animated: true)
                     self.presentViewController(tabBarController, animated: true, completion: nil)
                 })
                 
@@ -236,9 +250,7 @@ class LoginViewController: UIViewController {
                 
             else {
                 dispatch_async(dispatch_get_main_queue(), {
-                    let alert = UIAlertController(title: "Data not loaded", message: "Connection error", preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    self.showAlert("Error", message: "There was a connection error", confirmButton: "OK")
                 })
                 
             }
