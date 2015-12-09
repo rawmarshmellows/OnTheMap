@@ -217,21 +217,25 @@ class LoginViewController: UIViewController {
             else if (errorString == "There was an networking error") {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.showAlert("Error", message: errorString!, confirmButton: "OK")
+                    self.loggingInLabel?.hidden = true
                 })
             }
             else if (errorString == "There was an error in the request for data") {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.showAlert("Error", message: errorString!, confirmButton: "OK")
+                    self.loggingInLabel?.hidden = true
                 })
             }
             else if (errorString == "There was an error in the conversion for data") {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.showAlert("Error", message: errorString!, confirmButton: "OK")
+                    self.loggingInLabel?.hidden = true
                 })
             }
             else if (errorString == "Please check email and password") {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.showAlert("Error", message: errorString!, confirmButton: "OK")
+                    self.loggingInLabel?.hidden = true
                 })
             }
         }

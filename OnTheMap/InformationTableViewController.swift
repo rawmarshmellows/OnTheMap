@@ -91,29 +91,38 @@ class InformationTableViewController: UITableViewController {
         return cell
     }
 
-    override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let studentInformation = appDelegate.studentsInformation[indexPath.row]
         let studentMediaURL = studentInformation.mediaURL!
-        var updatedStudentMediaURL : String!
         let app = UIApplication.sharedApplication()
+        app.openURL(NSURL(string: studentMediaURL)!)
+//        var updatedStudentMediaURL : String!
+//        
+//        
+//        if (studentMediaURL.characters.count < 7) {
+//            showAlert("Error", message: "Not a valid URL", confirmButton: "OK")
+//        }
+//        
+//        else {
+//            var index = studentMediaURL.startIndex.advancedBy(7)
+//            
+//            if (studentMediaURL.substringToIndex(index) == "http://") {
+//                updatedStudentMediaURL = studentMediaURL
+//            }
+//            else {
+//                updatedStudentMediaURL = "http://" + studentMediaURL
+//            }
+//            
+//            index = studentMediaURL.startIndex.advancedBy(11)
+//            if (studentMediaURL.substringToIndex(index) == "http://www.") {
+//                // do nothing
+//            }
+//            else {
+//                updatedStudentMediaURL = "http://www." + studentMediaURL
+//            }
+//            
+//        }
         
-        var index = studentMediaURL.startIndex.advancedBy(7)
-        
-        if (studentMediaURL.substringToIndex(index) == "http://") {
-            updatedStudentMediaURL = studentMediaURL
-        }
-        else {
-            updatedStudentMediaURL = "http://" + studentMediaURL
-        }
-        
-        index = studentMediaURL.startIndex.advancedBy(11)
-        if (studentMediaURL.substringToIndex(index) == "http://www.") {
-            // do nothing
-        }
-        else {
-            updatedStudentMediaURL = "http://www." + studentMediaURL
-        }
-        app.openURL(NSURL(string: updatedStudentMediaURL)!)
         
         
     }

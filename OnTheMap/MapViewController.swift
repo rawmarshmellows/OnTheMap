@@ -23,7 +23,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        print("In viewWillAppear")
     }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -79,10 +78,40 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     // This delegate method is implemented to respond to taps. It opens the system browser
     // to the URL specified in the annotationViews subtitle property.
     func mapView(mapView: MKMapView, annotationView: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        if control == annotationView.rightCalloutAccessoryView {
-            let app = UIApplication.sharedApplication()
-            app.openURL(NSURL(string: annotationView.annotation!.subtitle!!)!)
-        }
+
+        let studentMediaURL = annotationView.annotation!.subtitle!!
+        let app = UIApplication.sharedApplication()
+        app.openURL(NSURL(string: studentMediaURL)!)
+//        
+//
+//        var updatedStudentMediaURL : String!
+//        let app = UIApplication.sharedApplication()
+//        
+//        if control == annotationView.rightCalloutAccessoryView {
+//            if (studentMediaURL.characters.count < 7) {
+//                showAlert("Error", message: "Not a valid URL", confirmButton: "OK")
+//            }
+//                
+//            else {
+//                var index = studentMediaURL.startIndex.advancedBy(7)
+//                
+//                if (studentMediaURL.substringToIndex(index) == "http://") {
+//                    updatedStudentMediaURL = studentMediaURL
+//                }
+//                else {
+//                    updatedStudentMediaURL = "http://" + studentMediaURL
+//                }
+//                
+//                index = studentMediaURL.startIndex.advancedBy(11)
+//                if (studentMediaURL.substringToIndex(index) == "http://www.") {
+//                    // do nothing
+//                }
+//                else {
+//                    updatedStudentMediaURL = "http://www." + studentMediaURL
+//                }
+//                app.openURL(NSURL(string: updatedStudentMediaURL)!)
+//            }
+//        }
     }
 
     func loadData() {
