@@ -33,6 +33,7 @@ class LoginViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        clearTextFields()
         self.subscribeToKeyboardWillShowNotifications()
         self.subscribeToKeyboardWillHideNotifications()
     }
@@ -64,9 +65,7 @@ class LoginViewController: UIViewController {
         configureTextField(passwordTextField, placeholder: "Password")
         
         /* Configure signup label */
-        signUpLabel.font = UIFont(name: "Roboto-Regular", size: signUpFontSize)
-        signUpLabel.textColor = UIColor.whiteColor()
-        signUpLabel.text = "Don't have an account? Sign Up"
+        configureSignUpLabel()
         
         /* Configure Facebook login*/
         facebookLogin.setBackingColor(UIColor(red: 58/255, green: 89/255, blue: 152/255, alpha: 1.0))
@@ -102,6 +101,23 @@ class LoginViewController: UIViewController {
 //        textField.frame.size.height = 50
     }
     
+    func clearTextFields() {
+        emailTextField.text = ""
+        passwordTextField.text = ""
+    }
+    
+    func configureSignUpLabel() {
+        let tapView = UITapGestureRecognizer(target: self, action: "openUdacityWebpage")
+        signUpLabel.font = UIFont(name: "Roboto-Regular", size: signUpFontSize)
+        signUpLabel.textColor = UIColor.whiteColor()
+        signUpLabel.text = "Don't have an account? Sign Up"
+        signUpLabel.userInteractionEnabled = true
+        signUpLabel.addGestureRecognizer(tapView)
+    }
+    
+    func openUdacityWebpage() {
+        UIApplication.sharedApplication().openURL(NSURL(string :"http://www.udacity.com")!)
+    }
     // MARK: Keyboard
     
     func keyboardHide() {
@@ -202,6 +218,7 @@ class LoginViewController: UIViewController {
     
     // MARK: Navigation
     func completeLogin() {
+        print("complete login")
         ParseClient.sharedInstance().getStudentData { (success, errorString) in
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), {

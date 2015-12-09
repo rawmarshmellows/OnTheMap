@@ -118,6 +118,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="On The Map" id="1vA-K1-9Qb">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="yAY-MI-to2"/>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="refresh" id="aZf-tu-s2e">
                                 <connections>
@@ -177,7 +178,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MKq-ss-98S">
                                 <rect key="frame" x="0.0" y="558" width="375" height="109"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Oe-Na-bSF" customClass="FindOnMapAndSubmitButton" customModule="OnTheMap" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Oe-Na-bSF" customClass="FindOnTheMapAndSubmitButton" customModule="OnTheMap" customModuleProvider="target">
                                         <rect key="frame" x="118" y="26" width="139" height="57"/>
                                         <animations/>
                                         <constraints>
@@ -203,22 +204,6 @@
                                     <constraint firstAttribute="bottom" secondItem="4Oe-Na-bSF" secondAttribute="bottom" constant="26" id="tbX-0i-0ae"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="studying" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eya-Ut-dGt">
-                                <rect key="frame" x="68" y="100" width="238" height="27"/>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="28" id="2e1-lS-zYy"/>
-                                    <constraint firstAttribute="width" constant="238" id="V5c-cd-GrQ"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="23"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="2e1-lS-zYy"/>
-                                    </mask>
-                                </variation>
-                            </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CdO-SK-7uX">
                                 <rect key="frame" x="0.0" y="173" width="375" height="388"/>
                                 <animations/>
@@ -241,6 +226,22 @@
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="2eC-5t-LM0"/>
+                                    </mask>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="studying" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eya-Ut-dGt">
+                                <rect key="frame" x="68" y="100" width="238" height="27"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="2e1-lS-zYy"/>
+                                    <constraint firstAttribute="width" constant="238" id="V5c-cd-GrQ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="23"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="2e1-lS-zYy"/>
                                     </mask>
                                 </variation>
                             </label>
@@ -284,10 +285,10 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="bottomLabel" destination="OlG-oL-tQL" id="7gW-Nr-o77"/>
+                        <outlet property="bottomView" destination="MKq-ss-98S" id="UeM-i2-u3t"/>
                         <outlet property="cancelButton" destination="8v8-q7-PQD" id="q0E-je-gzj"/>
                         <outlet property="enterLocationTextField" destination="CdO-SK-7uX" id="bdl-pJ-HQl"/>
-                        <outlet property="findOnMapAndSubmitButton" destination="4Oe-Na-bSF" id="elr-Oy-z6N"/>
-                        <outlet property="findOnTheMapView" destination="MKq-ss-98S" id="nGO-1q-fGV"/>
+                        <outlet property="findOnTheMapButton" destination="4Oe-Na-bSF" id="Vck-0c-W1q"/>
                         <outlet property="middleLabel" destination="eya-Ut-dGt" id="muy-rI-wK5"/>
                         <outlet property="topLabel" destination="Vtn-dT-ITl" id="aKw-Op-6ef"/>
                     </connections>
@@ -360,6 +361,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="On The Map" id="PHw-eA-nSl">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="uyt-x5-TdG">
+                            <connections>
+                                <action selector="logoutButton:" destination="fBS-EB-rtm" id="SOU-Wq-Ev5"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="refresh" id="gzD-vw-4G7">
                                 <connections>

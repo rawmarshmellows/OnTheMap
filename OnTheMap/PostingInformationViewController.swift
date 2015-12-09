@@ -18,22 +18,25 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
     let lightGrey : UIColor = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
     let transparentWhite : UIColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
     let enterURLTextFieldHeight : CGFloat = 100.0
-    let spanDeltaForMapView : Double = 0.001
+    let spanDeltaForMapView : Double = 0.05
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     // MARK : Outlets
     
     @IBOutlet weak var enterLocationTextField: UITextField!
-    @IBOutlet weak var findOnTheMapView: UIView!
+    @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var middleLabel: UILabel!
     @IBOutlet weak var bottomLabel: UILabel!
-    @IBOutlet weak var findOnMapAndSubmitButton: FindOnMapAndSubmitButton!
+    @IBOutlet weak var findOnTheMapButton: FindOnTheMapAndSubmitButton!
     @IBOutlet weak var cancelButton: UIButton!
     
     /* Instance variables */
     var enterURLTextField : UITextField!
     var userCoordinates : CLLocationCoordinate2D!
+    var userLocation : String!
     var mapView : MKMapView!
+    var submitUserDataButton : FindOnTheMapAndSubmitButton!
     
     // MARK: Lifecycle
     override func viewDidLoad() {
@@ -45,20 +48,13 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.subscribeToKeyboardWillShowNotifications()
-        self.subscribeToKeyboardWillHideNotifications()
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        self.unsubscribeFromKeyboardWillHideNotifications()
-        self.unsubscribeFromKeyboardWillShowNotifications()
     }
     
     // MARK : Initial Load UI Configurations
     func initialConfigureUI() {
         /* Setting background color */
         self.view.backgroundColor = lightGrey
-        findOnTheMapView.backgroundColor = lightGrey
+        bottomView.backgroundColor = lightGrey
         
         /* Setting textField background color */
         enterLocationTextField.backgroundColor = lightNavyBlue
@@ -117,11 +113,18 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
         
         /* Creating new mapView */
         createMapViewAtLocation()
+        let tapView = UITapGestureRecognizer(target: self, action: "keyboardHide")
+        mapView.addGestureRecognizer(tapView)
         
         /* Showing bottom view */
-        self.view.bringSubviewToFront(findOnTheMapView)
-        findOnTheMapView.backgroundColor = transparentWhite
+        self.view.bringSubviewToFront(bottomView)
+        bottomView.backgroundColor = transparentWhite
         
+        /* Hiding old button */
+        findOnTheMapButton.hidden = true
+        
+        /* Creating new button */
+        createSubmitUserDataButton()
         
         
     }
@@ -149,7 +152,17 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
         let region = MKCoordinateRegion(center: userCoordinates, span: span)
         let annotation = MKPointAnnotation()
         annotation.coordinate = userCoordinates
+        mapView.addAnnotation(annotation)
         mapView.setRegion(region, animated: true)
+    }
+    
+    func createSubmitUserDataButton() {
+        let buttonFrame = findOnTheMapButton.frame
+        submitUserDataButton = FindOnTheMapAndSubmitButton(frame: buttonFrame)
+        submitUserDataButton.setTitle("Submit", forState: UIControlState.Normal)
+        submitUserDataButton.addTarget(self, action: "submitUserData", forControlEvents: UIControlEvents.TouchUpInside)
+        bottomView.addSubview(submitUserDataButton)
+        
     }
     // MARK: - Buttons
     
@@ -158,23 +171,14 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func findOnTheMapButton(sender: AnyObject) {
-        if (findOnMapAndSubmitButton.titleLabel!.text == "Find on the map") {
-            findOnTheMapButton()
-        }
-        else if (findOnMapAndSubmitButton.titleLabel!.text == "Submit") {
-            submitUserDataButton()
-        }
-    }
-    
-    func findOnTheMapButton() {
         if (enterLocationTextField.text == "") {
             showAlert("Error", message: "Please enter location", confirmButton: "OK")
         }
         else {
-            let address = enterLocationTextField.text
+            userLocation = enterLocationTextField.text
             let geocoder = CLGeocoder()
             
-            geocoder.geocodeAddressString(address!, completionHandler: {(placemarks, error) -> Void in
+            geocoder.geocodeAddressString(userLocation!, completionHandler: {(placemarks, error) -> Void in
                 if((error) != nil){
                     self.showAlert("Error", message: "Geocoder has failed", confirmButton: "OK")
                 }
@@ -184,15 +188,33 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
                 }
             })
         }
-
     }
     
-    func submitUserDataButton() {
-        // Nothing
+    func submitUserData() {
+        if (enterURLTextField.text == "") {
+            showAlert("Error", message: "Please enter a link", confirmButton: "OK")
+            return
+        }
+        
+        // Setting the userInfo values
+        appDelegate.userInformation!.mediaURL = enterURLTextField.text
+        appDelegate.userInformation!.mapString = userLocation
+        appDelegate.userInformation!.latitude = userCoordinates.latitude
+        appDelegate.userInformation!.longitude = userCoordinates.longitude
+        
+        ParseClient.sharedInstance().postStudentData() { (success, errorString) in
+            if (success) {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+            else {
+                self.showAlert("Error", message: errorString!, confirmButton: "OK")
+            }
+        }
+        
+        
     }
     
 
-    
     // MARK: Keyboard
     
     func keyboardHide() {
@@ -200,59 +222,6 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
     }
     
-    func keyboardWillHide(notification: NSNotification) {
-        let screenOrigin = self.view.frame.origin.y
-        if (self.view.frame.origin.y == 0) {
-            // don't move the down view if it is already at the origin
-        }
-        else {
-            self.view.frame.origin.y += -(screenOrigin)
-        }
-    }
-    
-    func keyboardWillShow(notification: NSNotification) {
-        if (self.view.frame.origin.y == -getKeyboardHeight(notification)) {
-            // don't move the view up if it is already up
-        }
-        else if (self.view.frame.origin.y == 0) {
-            self.view.frame.origin.y -= getKeyboardHeight(notification)
-            
-        }
-        
-    }
-    
-    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
-        let userInfo = notification.userInfo
-        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
-        return keyboardSize.CGRectValue().height
-    }
-    
-    func subscribeToKeyboardWillShowNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-    }
-    
-    func subscribeToKeyboardWillHideNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
-    }
-    
-    
-    func unsubscribeFromKeyboardWillHideNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:
-            UIKeyboardWillHideNotification, object: nil)
-    }
-    
-    func unsubscribeFromKeyboardWillShowNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:
-            UIKeyboardWillShowNotification, object: nil)
-    }
-
-    
-    // MARK: - Alert
-    func showAlert(title : String, message : String, confirmButton : String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: confirmButton, style: UIAlertActionStyle.Default, handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)
-    }
 
     // MARK: UITextFieldDelegate
     func textFieldDidBeginEditing(textField: UITextField) {
@@ -261,10 +230,14 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
     
     func textFieldDidEndEditing(textField: UITextField) {
         if (textField == enterLocationTextField) {
-            textField.placeholder = "Enter location here"
+            if (textField.text == "") {
+                configureTextField(enterLocationTextField, placeholder: "Enter location here")
+            }
         }
-        else if (textField == enterURLTextField){
-            textField.placeholder = "Enter a link to share here"
+        else if (textField == enterURLTextField) {
+            if(textField.text == "") {
+                configureTextField(enterLocationTextField, placeholder: "Enter a link to share here")
+            }
         }
     }
 }

@@ -19,10 +19,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         // Set the mapView's delegate to self
         mapView.delegate = self
+        populateAnnotations()
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        populateAnnotations()
         print("In viewWillAppear")
     }
     override func viewDidAppear(animated: Bool) {
@@ -121,6 +121,16 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 
     }
    
+    @IBAction func logoutButton(sender: AnyObject) {
+        UdacityClient.sharedInstance().logoutOfSession() { (success, errorString) in
+            if (success) {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+            else {
+                self.showAlert("Error", message: errorString!, confirmButton: "OK")
+            }
+        }
+    }
     /*
     // MARK: - Navigation
 

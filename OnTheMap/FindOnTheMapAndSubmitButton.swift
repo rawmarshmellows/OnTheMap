@@ -8,11 +8,12 @@
 
 import UIKit
 
-class FindOnMapAndSubmitButton: UIButton {
+class FindOnTheMapAndSubmitButton: UIButton {
     
     let borderedButtonCornerRadius : CGFloat = 6.0
     let buttonTitleFontSize : CGFloat = 15.0
  let lightNavyBlue : UIColor = UIColor(red: 10/255, green: 100/255, blue: 165/255, alpha: 1)
+    
     // MARK: Initialization
     required init(coder aDecoder : NSCoder) {
         super.init(coder: aDecoder)!

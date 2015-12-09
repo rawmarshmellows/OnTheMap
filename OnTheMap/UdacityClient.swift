@@ -29,14 +29,7 @@ class UdacityClient : NSObject {
         request.HTTPMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        var HTTPBody = "{\"udacity\": {\"username\":"
-//        HTTPBody += "\""
-//        HTTPBody += hostViewController.emailTextField.text!
-//        HTTPBody += "\","
-//        HTTPBody += "\"password\":"
-//        HTTPBody += "\""
-//        HTTPBody += hostViewController.passwordTextField.text!
-//        HTTPBody += "\"}}"
+//        let HTTPBody = createHTTPBody(hostViewController)
 //        request.HTTPBody = HTTPBody.dataUsingEncoding(NSUTF8StringEncoding)
         request.HTTPBody = "{\"udacity\": {\"username\": \"kevinyihchyunlu@gmail.com\", \"password\": \"V+.i2##=Ln\"}}".dataUsingEncoding(NSUTF8StringEncoding)
         let session = NSURLSession.sharedSession()
@@ -69,9 +62,7 @@ class UdacityClient : NSObject {
                 if (parsedResult.objectForKey("error") == nil) {
                     self.sessionID = String(parsedResult["session"]!!["id"])
                     let uniqueKey = parsedResult["account"]!!["key"]! as! String
-                    print(uniqueKey)
                     self.appDelegate.userInformation = StudentInformation(studentInformation: ["uniqueKey" : uniqueKey])
-                    print(self.appDelegate.userInformation!)
                     // get user data
                     self.getUserData() { (success, errorString) in
                         if(success) {
@@ -91,6 +82,14 @@ class UdacityClient : NSObject {
             
         }
         task.resume()
+    }
+    
+    func createHTTPBody(hostViewController: LoginViewController) -> String {
+        var HTTPBody = "{\"udacity\":"
+        HTTPBody +=   "{\"username\": \"" + hostViewController.emailTextField.text!
+        HTTPBody += "\", \"password\": \"" + hostViewController.passwordTextField.text!
+        HTTPBody += "\"}}"
+        return HTTPBody
     }
     
     func getUserData(completionHandler : (success : Bool, errorString : String?) -> Void) {
@@ -125,6 +124,30 @@ class UdacityClient : NSObject {
                     completionHandler(success: true, errorString: nil)
                 }
             }
+        }
+        task.resume()
+    }
+    func logoutOfSession(completionHandler : (success : Bool, errorString : String?) -> Void) {
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/session")!)
+        request.HTTPMethod = "DELETE"
+        var xsrfCookie: NSHTTPCookie? = nil
+        let sharedCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
+        for cookie in sharedCookieStorage.cookies! as [NSHTTPCookie] {
+            if cookie.name == "XSRF-TOKEN" { xsrfCookie = cookie }
+        }
+        if let xsrfCookie = xsrfCookie {
+            request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
+        }
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            if error != nil { // Handle error…
+                completionHandler(success: false, errorString: "Logout out failed")
+                return
+            }
+            else {
+                completionHandler(success: true, errorString: nil)
+            }
+
         }
         task.resume()
     }
