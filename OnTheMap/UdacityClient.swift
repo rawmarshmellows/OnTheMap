@@ -29,8 +29,10 @@ class UdacityClient : NSObject {
         request.HTTPMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        let HTTPBody = createHTTPBody(hostViewController)
-        request.HTTPBody = HTTPBody.dataUsingEncoding(NSUTF8StringEncoding)
+        request.HTTPBody = "{\"udacity\": {\"username\": \"kevinyihchyunlu@gmail.com\", \"password\": \"V+.i2##=Ln\"}}".dataUsingEncoding(NSUTF8StringEncoding)
+
+//        let HTTPBody = createHTTPBody(hostViewController)
+//        request.HTTPBody = HTTPBody.dataUsingEncoding(NSUTF8StringEncoding)
         let session = NSURLSession.sharedSession()
         
 

@@ -123,6 +123,7 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
         /* Creating new textField */
         createEnterURLTextField()
         
+        
         /* Creating new mapView */
         createMapViewAtLocation()
         let tapView = UITapGestureRecognizer(target: self, action: "keyboardHide")
@@ -145,6 +146,7 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
         configureTextField(enterURLTextField, placeholder: "Enter a link to share here")
         self.view.addSubview(enterURLTextField)
         enterURLTextField.backgroundColor = UIColor.clearColor()
+        enterLocationTextField.delegate = self
         
     }
 
@@ -195,6 +197,7 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
             geocoder.geocodeAddressString(userLocation!, completionHandler: {(placemarks, error) -> Void in
                 if((error) != nil){
                     self.showAlert("Error", message: "Geocoder has failed", confirmButton: "OK")
+                    self.activityIndicatorView.stopAnimating()
                 }
                 if let placemark = placemarks?.first {
                     self.userCoordinates = placemark.location!.coordinate
@@ -225,11 +228,16 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
         /* Create request */
         ParseClient.sharedInstance().postStudentData() { (success, errorString) in
             if (success) {
-                self.dismissViewControllerAnimated(true, completion: nil)
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                })
+                
             }
             else {
-                self.showAlert("Error", message: errorString!, confirmButton: "OK")
-                self.activityIndicatorView.stopAnimating()
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.showAlert("Error", message: errorString!, confirmButton: "OK")
+                    self.activityIndicatorView.stopAnimating()
+                })
             }
         }
     }

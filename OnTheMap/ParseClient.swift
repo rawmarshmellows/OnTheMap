@@ -37,6 +37,7 @@ class ParseClient : NSObject {
         request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
         session = NSURLSession.sharedSession()
         let task = session!.dataTaskWithRequest(request) { data, response, error in
+
             // Checking for errors
             guard (error == nil) else {
                 completionHandler(success: false, errorString: "There was a networking error")
@@ -51,19 +52,26 @@ class ParseClient : NSObject {
             let parsedResult : AnyObject?
             do {
                 parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! [String : AnyObject]
+                
             }
             catch {
-                completionHandler(success: false, errorString: "There was an error in the conversion for data`")
+                completionHandler(success: false, errorString: "There was an error in the conversion for data")
                 return
             }
-//            print(parsedResult)
+            
             let parsedResultAsArray : [[String : AnyObject]]
+            
             if let parsedResult = parsedResult {
-                parsedResultAsArray = parsedResult["results"] as! [[String: AnyObject]]
-//                print("Printing parsedResultAsArray: " + String(parsedResultAsArray))
-                self.addStudentInformation(parsedResultAsArray)
-                completionHandler(success: true, errorString: nil)
-//                print(self.appDelegate.locations)
+                if (parsedResult.objectForKey("error") == nil) {
+                    parsedResultAsArray = parsedResult["results"] as! [[String: AnyObject]]
+                    self.addStudentInformation(parsedResultAsArray)
+                    completionHandler(success: true, errorString: nil)
+                }
+                else {
+                    completionHandler(success: false, errorString: "API Key Error")
+   
+                }
+
             }
             
         }

@@ -226,7 +226,6 @@ class LoginViewController: UIViewController {
         
         /* Start the activity indicator */
         activityIndicatorView?.startAnimating()
-        
         /* Create request */
         UdacityClient.sharedInstance().authenticateLoginDetails(self) {(success, errorString) in
             dispatch_async(dispatch_get_main_queue(), {
@@ -235,41 +234,16 @@ class LoginViewController: UIViewController {
             if (success) {
                 self.completeLogin()
             }
-            else if (errorString == "There was an networking error") {
+            else {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.showAlert("Error", message: errorString!, confirmButton: "OK")
                     self.loggingInLabel?.hidden = true
                     self.activityIndicatorView?.stopAnimating()
-                })
-            }
-            else if (errorString == "There was an error in the request for data") {
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.showAlert("Error", message: errorString!, confirmButton: "OK")
-                    self.loggingInLabel?.hidden = true
-                    self.activityIndicatorView?.stopAnimating()
-
-                })
-            }
-            else if (errorString == "There was an error in the conversion for data") {
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.showAlert("Error", message: errorString!, confirmButton: "OK")
-                    self.loggingInLabel?.hidden = true
-                    self.activityIndicatorView?.stopAnimating()
-
-                })
-            }
-            else if (errorString == "Please check email and password") {
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.showAlert("Error", message: errorString!, confirmButton: "OK")
-                    self.loggingInLabel?.hidden = true
-                    self.activityIndicatorView?.stopAnimating()
-
                 })
             }
         }
     }
     
-    // MARK: Navigation
     func completeLogin() {
         ParseClient.sharedInstance().getStudentData { (success, errorString) in
             if (success) {
@@ -279,10 +253,11 @@ class LoginViewController: UIViewController {
                 })
                 
             }
-                
             else {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.showAlert("Error", message: errorString!, confirmButton: "OK")
+                    self.loggingInLabel?.hidden = true
+                    self.activityIndicatorView?.stopAnimating()
                 })
                 
             }
