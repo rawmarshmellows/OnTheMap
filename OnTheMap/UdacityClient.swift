@@ -12,6 +12,7 @@ import Foundation
 class UdacityClient : NSObject {
     var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var sessionID : String?
+    let modelData = ModelData.sharedData()
     
     override init() {
         super.init()
@@ -24,15 +25,18 @@ class UdacityClient : NSObject {
     }
     
     func authenticateLoginDetails(hostViewController : LoginViewController, completionHandler : (success: Bool, errorString: String?) -> Void) {
-
         let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/session")!)
         request.HTTPMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        let HTTPBody = createHTTPBody(hostViewController)
-        request.HTTPBody = HTTPBody.dataUsingEncoding(NSUTF8StringEncoding)
+//        let HTTPBody = createHTTPBody(hostViewController)
+//        request.HTTPBody = HTTPBody.dataUsingEncoding(NSUTF8StringEncoding)
+        request.HTTPBody = "{\"udacity\": {\"username\": \"kevinyihchyunlu@gmail.com\", \"password\": \"V+.i2##=Ln\"}}".dataUsingEncoding(NSUTF8StringEncoding)
         let session = NSURLSession.sharedSession()
+        
+
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
+            print("In task")
             // Checking for errors
             guard (error == nil) else {
                 completionHandler(success: false, errorString: "There was an networking error")
@@ -61,7 +65,7 @@ class UdacityClient : NSObject {
                 if (parsedResult.objectForKey("error") == nil) {
                     self.sessionID = String(parsedResult["session"]!!["id"])
                     let uniqueKey = parsedResult["account"]!!["key"]! as! String
-                    self.appDelegate.userInformation = StudentInformation(studentInformation: ["uniqueKey" : uniqueKey])
+                    self.modelData.userInformation = StudentInformation(studentInformation: ["uniqueKey" : uniqueKey])
                     // get user data
                     self.getUserData() { (success, errorString) in
                         if(success) {
@@ -69,6 +73,7 @@ class UdacityClient : NSObject {
                         }
                         else {
                             completionHandler(success: success, errorString: errorString)
+                            return
                         }
                         
                     }
@@ -85,23 +90,30 @@ class UdacityClient : NSObject {
     
     func createHTTPBody(hostViewController: LoginViewController) -> String {
         var HTTPBody = "{\"udacity\":"
-        HTTPBody +=   "{\"username\": \"" + hostViewController.emailTextField.text!
-        HTTPBody += "\", \"password\": \"" + hostViewController.passwordTextField.text!
-        HTTPBody += "\"}}"
+        HTTPBody +=    "{\"username\": \"" + hostViewController.emailTextField.text!
+        HTTPBody +=    "\", \"password\": \"" + hostViewController.passwordTextField.text!
+        HTTPBody +=    "\"}}"
         return HTTPBody
     }
     
     func getUserData(completionHandler : (success : Bool, errorString : String?) -> Void) {
-        let uniqueKey = appDelegate.userInformation!.uniqueKey
+        let uniqueKey = modelData.userInformation!.uniqueKey
         let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/users/" + uniqueKey)!)
         print("https://www.udacity.com/api/users/" + uniqueKey)
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
-            if error != nil {
-                completionHandler(success: false, errorString: "Can't retrieve user data")
+            // Checking for errors
+            guard (error == nil) else {
+                completionHandler(success: false, errorString: "There was an networking error")
                 return
             }
-            let newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5)) /* subset response data! */
+            guard let data = data else {
+                completionHandler(success: false, errorString: "There was an error in the request for data")
+                return
+            }
+            
+            /* subset response data! */
+            let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
             
             let parsedResult: AnyObject?
             
@@ -117,9 +129,9 @@ class UdacityClient : NSObject {
                 if (parsedResult.objectForKey("error") == nil) {
                     let firstName = parsedResult["user"]!!["first_name"] as! String
                     let lastName = parsedResult["user"]!!["last_name"] as! String
-                    self.appDelegate.userInformation!.firstName = firstName
-                    self.appDelegate.userInformation!.lastName = lastName
-                    print(self.appDelegate.userInformation!)
+                    self.modelData.userInformation!.firstName = firstName
+                    self.modelData.userInformation!.lastName = lastName
+                    print(self.modelData.userInformation!)
                     completionHandler(success: true, errorString: nil)
                 }
             }

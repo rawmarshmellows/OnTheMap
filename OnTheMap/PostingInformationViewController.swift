@@ -20,7 +20,8 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
     let enterURLTextFieldHeight : CGFloat = 100.0
     let spanDeltaForMapView : Double = 0.05
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    
+    let modelData = ModelData.sharedData()
+
     // MARK : Outlets
     
     @IBOutlet weak var enterLocationTextField: UITextField!
@@ -37,6 +38,7 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
     var userLocation : String!
     var mapView : MKMapView!
     var submitUserDataButton : FindOnTheMapAndSubmitButton!
+    var activityIndicatorView : UIActivityIndicatorView!
     
     // MARK: Lifecycle
     override func viewDidLoad() {
@@ -50,6 +52,13 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
         super.viewWillAppear(animated)
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        /* Stop animating the activityIndicator if the view goes off-screen so user comes back with new view */
+        activityIndicatorView.stopAnimating()
+    }
+    deinit {
+        print("Posting info vc is deallocated")
+    }
     // MARK : Initial Load UI Configurations
     func initialConfigureUI() {
         /* Setting background color */
@@ -66,6 +75,9 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
         /* Adding tapViews */
         let tapView = UITapGestureRecognizer(target: self, action: "keyboardHide")
         self.view.addGestureRecognizer(tapView)
+        
+        /* Create activity indicator */
+        createActivityIndicatorView()
     }
     
     
@@ -125,8 +137,6 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
         
         /* Creating new button */
         createSubmitUserDataButton()
-        
-        
     }
     
     func createEnterURLTextField() {
@@ -171,10 +181,14 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func findOnTheMapButton(sender: AnyObject) {
+        
         if (enterLocationTextField.text == "") {
             showAlert("Error", message: "Please enter location", confirmButton: "OK")
         }
         else {
+            /* If no error then start activity indicator view */
+            activityIndicatorView.startAnimating()
+            
             userLocation = enterLocationTextField.text
             let geocoder = CLGeocoder()
             
@@ -185,6 +199,9 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
                 if let placemark = placemarks?.first {
                     self.userCoordinates = placemark.location!.coordinate
                     self.afterLocationConfigureUI()
+                    
+                    /* After UI is finished configuring stop the activity indicator view */
+                    self.activityIndicatorView.stopAnimating()
                 }
             })
         }
@@ -197,23 +214,32 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
         }
         
         // Setting the userInfo values
-        appDelegate.userInformation!.mediaURL = enterURLTextField.text
-        appDelegate.userInformation!.mapString = userLocation
-        appDelegate.userInformation!.latitude = userCoordinates.latitude
-        appDelegate.userInformation!.longitude = userCoordinates.longitude
+        modelData.userInformation!.mediaURL = enterURLTextField.text
+        modelData.userInformation!.mapString = userLocation
+        modelData.userInformation!.latitude = userCoordinates.latitude
+        modelData.userInformation!.longitude = userCoordinates.longitude
         
+        /* Start activity indicator if there are no errors*/
+        activityIndicatorView.startAnimating()
+        
+        /* Create request */
         ParseClient.sharedInstance().postStudentData() { (success, errorString) in
             if (success) {
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
             else {
                 self.showAlert("Error", message: errorString!, confirmButton: "OK")
+                self.activityIndicatorView.stopAnimating()
             }
         }
-        
-        
     }
     
+    func createActivityIndicatorView() {
+        activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        activityIndicatorView?.center = self.view.center
+        activityIndicatorView?.color = UIColor.whiteColor()
+        self.view.addSubview(activityIndicatorView!)
+    }
 
     // MARK: Keyboard
     
@@ -240,4 +266,5 @@ class PostingInformationViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
+    
 }

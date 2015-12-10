@@ -26,6 +26,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var signUpLabel: UILabel!
     var loggingInLabel : UILabel?
+    var activityIndicatorView : UIActivityIndicatorView!
     
     
     // MARK: Lifecycle
@@ -47,6 +48,7 @@ class LoginViewController: UIViewController {
         super.viewDidDisappear(animated)
         self.view.removeEffects()
         loggingInLabel?.hidden = true
+        activityIndicatorView?.stopAnimating()
         self.unsubscribeFromKeyboardWillHideNotifications()
         self.unsubscribeFromKeyboardWillShowNotifications()
     }
@@ -82,7 +84,9 @@ class LoginViewController: UIViewController {
         createLoggingInLabel()
         configureLoggingInLabel()
         loggingInLabel!.hidden = true
-
+        
+        /* Create the activity indicator view */
+        createActivityIndicatorView()
     }
     
   
@@ -132,13 +136,20 @@ class LoginViewController: UIViewController {
     func afterLoginConfigureUI () {
         /* Blur the view */
         self.view.blurView(style: UIBlurEffectStyle.Light)
+        
+        /* Configure the label and bring it forwards */
         configureLoggingInLabel()
+        self.view.bringSubviewToFront(loggingInLabel!)
         loggingInLabel!.hidden = false
+        
+        /* Bring the ActivityIndicatorView fowards */
+        self.view.bringSubviewToFront(activityIndicatorView!)
     }
     
     func createLoggingInLabel () {
-        let labelFrame = CGRectMake(0, self.view.frame.maxY/2, self.view.frame.width, loggingInLabelHeight)
+        let labelFrame = CGRectMake(0, self.view.frame.maxY/2.5, self.view.frame.width, loggingInLabelHeight)
         loggingInLabel = UILabel(frame: labelFrame)
+        self.view.addSubview(loggingInLabel!)
     }
     
     func configureLoggingInLabel() {
@@ -146,8 +157,13 @@ class LoginViewController: UIViewController {
         loggingInLabel!.textColor = UIColor.whiteColor()
         loggingInLabel!.text = "Logging in..."
         loggingInLabel!.textAlignment = NSTextAlignment.Center
-        self.view.addSubview(loggingInLabel!)
-        self.view.bringSubviewToFront(loggingInLabel!)
+        
+    }
+    func createActivityIndicatorView() {
+        activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        activityIndicatorView?.center = self.view.center
+        activityIndicatorView?.color = UIColor.whiteColor()
+        self.view.addSubview(activityIndicatorView!)
     }
     
     // MARK: Keyboard
@@ -207,6 +223,11 @@ class LoginViewController: UIViewController {
     @IBAction func loginButton(sender: AnyObject) {
         /* Updating the UI before posting user data */
         afterLoginConfigureUI()
+        
+        /* Start the activity indicator */
+        activityIndicatorView?.startAnimating()
+        
+        /* Create request */
         UdacityClient.sharedInstance().authenticateLoginDetails(self) {(success, errorString) in
             dispatch_async(dispatch_get_main_queue(), {
                 self.keyboardHide()
@@ -218,24 +239,31 @@ class LoginViewController: UIViewController {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.showAlert("Error", message: errorString!, confirmButton: "OK")
                     self.loggingInLabel?.hidden = true
+                    self.activityIndicatorView?.stopAnimating()
                 })
             }
             else if (errorString == "There was an error in the request for data") {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.showAlert("Error", message: errorString!, confirmButton: "OK")
                     self.loggingInLabel?.hidden = true
+                    self.activityIndicatorView?.stopAnimating()
+
                 })
             }
             else if (errorString == "There was an error in the conversion for data") {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.showAlert("Error", message: errorString!, confirmButton: "OK")
                     self.loggingInLabel?.hidden = true
+                    self.activityIndicatorView?.stopAnimating()
+
                 })
             }
             else if (errorString == "Please check email and password") {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.showAlert("Error", message: errorString!, confirmButton: "OK")
                     self.loggingInLabel?.hidden = true
+                    self.activityIndicatorView?.stopAnimating()
+
                 })
             }
         }
@@ -254,7 +282,7 @@ class LoginViewController: UIViewController {
                 
             else {
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.showAlert("Error", message: "There was a connection error", confirmButton: "OK")
+                    self.showAlert("Error", message: errorString!, confirmButton: "OK")
                 })
                 
             }

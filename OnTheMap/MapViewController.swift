@@ -34,7 +34,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func populateAnnotations() {
-        let studentsInformation = appDelegate.studentsInformation
+        let studentsInformation = ModelData.sharedData().studentsInformation
         var annotations = [MKPointAnnotation]()
         for studentInformation in studentsInformation {
             
@@ -123,20 +123,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         ParseClient.sharedInstance().getStudentData { (success, errorString) in
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), {
-                    let alert = UIAlertController(title: "Data loaded", message: "Data has been loaded", preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
-                    
-                    
+                    self.showAlert("Data loaded", message: "Data has been loaded", confirmButton: "OK")
                 })
                 
             }
                 
             else {
                 dispatch_async(dispatch_get_main_queue(), {
-                    let alert = UIAlertController(title: "Data not loaded", message: "Connection error", preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    self.showAlert("Data not loaded", message: errorString!, confirmButton: "OK")
                 })
                 
             }

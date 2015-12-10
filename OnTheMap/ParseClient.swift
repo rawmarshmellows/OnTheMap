@@ -12,8 +12,13 @@ import Foundation
 
 class ParseClient : NSObject {
     
-    var session : NSURLSession?
+    /* Constants */
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let modelData = ModelData.sharedData()
+
+    /* Instance variables */
+    var session : NSURLSession?
+    
     class func sharedInstance() -> ParseClient {
         struct Singleton {
             static var sharedInstance = ParseClient()
@@ -34,7 +39,7 @@ class ParseClient : NSObject {
         let task = session!.dataTaskWithRequest(request) { data, response, error in
             // Checking for errors
             guard (error == nil) else {
-                completionHandler(success: false, errorString: "There was an networking error")
+                completionHandler(success: false, errorString: "There was a networking error")
                 return
             }
             guard let data = data else {
@@ -65,8 +70,9 @@ class ParseClient : NSObject {
         task.resume()
     }
     func addStudentInformation(studentsInformation : [[String: AnyObject]]) {
+        modelData.studentsInformation.removeAll()
         for studentInformation in studentsInformation {
-            appDelegate.studentsInformation.append(StudentInformation(studentInformation: studentInformation))
+            modelData.studentsInformation.append(StudentInformation(studentInformation: studentInformation))
         }
     }
     func postStudentData(completionHandler : (success: Bool, errorString: String?) -> Void) {
@@ -91,22 +97,22 @@ class ParseClient : NSObject {
     }
     
     func createHTTPBody() -> String {
-        let uniqueKey = appDelegate.userInformation!.uniqueKey
-        let firstName = appDelegate.userInformation!.firstName
-        let lastName = appDelegate.userInformation!.lastName
-        let mapString = appDelegate.userInformation!.mapString
-        let mediaURL = appDelegate.userInformation!.mediaURL
-        let latitude = appDelegate.userInformation!.latitude
-        let longitude = appDelegate.userInformation!.longitude
+        let uniqueKey = modelData.userInformation!.uniqueKey
+        let firstName = modelData.userInformation!.firstName
+        let lastName  = modelData.userInformation!.lastName
+        let mapString = modelData.userInformation!.mapString
+        let mediaURL  = modelData.userInformation!.mediaURL
+        let latitude  = modelData.userInformation!.latitude
+        let longitude = modelData.userInformation!.longitude
         
         var HTTPBody = "{\"uniqueKey\": \"" + uniqueKey
-        HTTPBody += "\", \"firstName\": \"" + firstName
-        HTTPBody += "\", \"lastName\": \"" +  lastName
-        HTTPBody += "\",\"mapString\": \"" + mapString
-        HTTPBody += "\", \"mediaURL\": \"" + mediaURL
-        HTTPBody += "\",\"latitude\":" + String(latitude)
-        HTTPBody += ", \"longitude\":" + String(longitude)
-        HTTPBody += "}"
+        HTTPBody    += "\", \"firstName\": \"" + firstName
+        HTTPBody    += "\", \"lastName\": \"" +  lastName
+        HTTPBody    += "\",\"mapString\": \"" + mapString
+        HTTPBody    += "\", \"mediaURL\": \"" + mediaURL
+        HTTPBody    += "\",\"latitude\":" + String(latitude)
+        HTTPBody    += ", \"longitude\":" + String(longitude)
+        HTTPBody    += "}"
         return HTTPBody
     }
 }
