@@ -35,6 +35,7 @@ class InformationTableViewController: UITableViewController {
                     self.showAlert("Data reloaded", message: "Data has been reloaded", confirmButton: "OK")
                     print("==================================================================")
                     print(self.modelData.studentsInformation)
+                    self.tableView.reloadData()
                 })
             }
                 
