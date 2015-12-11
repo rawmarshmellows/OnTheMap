@@ -36,6 +36,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     func populateAnnotations() {
         let studentsInformation = ModelData.sharedData().studentsInformation
         var annotations = [MKPointAnnotation]()
+        print(studentsInformation)
         for studentInformation in studentsInformation {
             
             let annotation = MKPointAnnotation()
